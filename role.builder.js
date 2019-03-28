@@ -6,6 +6,7 @@
  * var mod = require('role.harvester');
  * mod.thing == 'a thing'; // true
  */
+var roleUpgrader = require("role.upgrader");
 
 module.exports = {
     run: function (creep) {
@@ -20,8 +21,13 @@ module.exports = {
                 creep.moveTo(source);
             }
         } else {
-            if (creep.transfer(creep.room.controller, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
-                creep.moveTo(creep.room.controller);
+            let construction = creep.pos.findClosestByRange(FIND_CONSTRUCTION_SITES);
+            if (construction) {
+                if (creep.build(construction) === ERR_NOT_IN_RANGE) {
+                    creep.moveTo(construction);
+                }
+            } else {
+                roleUpgrader.run(creep);
             }
         }
     }
