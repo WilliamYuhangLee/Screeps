@@ -22,9 +22,12 @@ module.exports = {
                 creep.moveTo(source);
             }
         } else {
-            if (Game.spawns["origin"].energy < Game.spawns["origin"].energyCapacity) {
-                if (creep.transfer(Game.spawns["origin"], RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
-                    creep.moveTo(Game.spawns["origin"]);
+            let target = creep.pos.findClosestByRange(FIND_MY_STRUCTURES, {
+                filter: (structure) => structure.energy < structure.energyCapacity
+            });
+            if (target) {
+                if (creep.transfer(target, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
+                    creep.moveTo(target);
                 }
             } else {
                 roleBuilder.run(creep);
