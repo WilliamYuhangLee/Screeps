@@ -15,10 +15,8 @@ module.exports = {
             creep.memory.collecting = false;
         }
         if (creep.memory.collecting) {
-            let source = creep.pos.findClosestByPath(FIND_SOURCES);
-            if (creep.harvest(source) === ERR_NOT_IN_RANGE) {
-                creep.moveTo(source);
-            }
+            require("prototype.creep")();
+            creep.collectFromStockpile();
         } else {
             if (creep.transfer(creep.room.controller, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
                 creep.moveTo(creep.room.controller);

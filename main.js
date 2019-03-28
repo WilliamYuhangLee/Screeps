@@ -8,7 +8,7 @@ module.exports.loop = function () {
 
     let numberOfRolesWanted = {
         "harvester": 2,
-        "builder": 6,
+        "builder": 10,
         "upgrader": 6,
         "repairer": 2,
     };

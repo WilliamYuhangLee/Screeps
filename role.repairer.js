@@ -17,10 +17,8 @@ module.exports = {
             creep.memory.collecting = false;
         }
         if (creep.memory.collecting) {
-            let source = creep.pos.findClosestByPath(FIND_SOURCES);
-            if (creep.harvest(source) === ERR_NOT_IN_RANGE) {
-                creep.moveTo(source);
-            }
+            require("prototype.creep")();
+            creep.collectFromStockpile();
         } else {
             let target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
                 filter: (structure) => structure.hits < structure.hitsMax && structure.structureType !== STRUCTURE_WALL
