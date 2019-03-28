@@ -4,6 +4,9 @@ var roleBuilder = require("role.builder");
 var roleRepairer = require("role.repairer");
 
 module.exports.loop = function () {
+    for(let name in Memory.creeps) {
+        if (!Game.creeps[name]) delete Memory.creeps[name];
+    }
     for (let name in Game.creeps) {
         let creep = Game.creeps[name];
         if (creep.memory.role === "harvester") {
