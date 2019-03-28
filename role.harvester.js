@@ -17,12 +17,12 @@ module.exports = {
             creep.memory.collecting = false;
         }
         if (creep.memory.collecting) {
-            let source = creep.pos.findClosestByRange(FIND_SOURCES);
+            let source = creep.pos.findClosestByPath(FIND_SOURCES);
             if (creep.harvest(source) === ERR_NOT_IN_RANGE) {
                 creep.moveTo(source);
             }
         } else {
-            let target = creep.pos.findClosestByRange(FIND_MY_STRUCTURES, {
+            let target = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {
                 filter: (structure) => structure.energy < structure.energyCapacity
             });
             if (target) {
