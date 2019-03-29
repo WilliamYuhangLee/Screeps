@@ -19,7 +19,7 @@ module.exports = {
             require("prototype.creep")();
             creep.collectFromStockpile();
         } else {
-            let construction = creep.pos.findClosestByRange(FIND_CONSTRUCTION_SITES);
+            let construction = creep.pos.findClosestByRange(FIND_MY_CONSTRUCTION_SITES);
             if (construction) {
                 if (creep.build(construction) === ERR_NOT_IN_RANGE) {
                     creep.moveTo(construction);

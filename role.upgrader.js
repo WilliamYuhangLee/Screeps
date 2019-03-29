@@ -18,8 +18,9 @@ module.exports = {
             require("prototype.creep")();
             creep.collectFromStockpile();
         } else {
-            if (creep.transfer(creep.room.controller, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
-                creep.moveTo(creep.room.controller);
+            // Temporary solution: hardcode to upgrader origin room's controller
+            if (creep.transfer(Game.spawns["origin"].room.controller, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
+                creep.moveTo(Game.spawns["origin"].room.controller);
             }
         }
     }
