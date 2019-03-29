@@ -1,11 +1,10 @@
 util = require("util");
 module.exports = function () {
     let bodies = {
-        "harvester": [WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE],
-        "builder": [WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE],
-        "upgrader": [WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE],
-        "repairer": [WORK, WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE],
-        "miner": [WORK, WORK, WORK, WORK, WORK, MOVE],
+        "harvester": [WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE],
+        "builder": [WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE],
+        "upgrader": [WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE],
+        "repairer": [WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE],
     };
     StructureSpawn.prototype.spawnCustomCreep = function (energy, roleName) {
         let body = [];

@@ -1,17 +1,17 @@
 function init(room) {
-    // technically not just init, also check for existence (thus change)
-    if (!Memory.rooms[room.name]) {
-        Memory.rooms[room.name] = {};
-    }
+    Memory.rooms[room.name] = {};
     let memory = Memory.rooms[room.name];
+    memory.containers = {};
+    room.find(FIND_STRUCTURES, {filter: (s) => s.structureType === STRUCTURE_CONTAINER}).map(c => {
+        memory.containers[c.id] = null;
+    });
+}
 
-    if (!memory.containers) {
-        memory.containers = {};
-    }
-    let containers = room.find(FIND_STRUCTURES, {filter: (s) => s.structureType === STRUCTURE_CONTAINER});
-    for (let i in containers) {
-        memory.containers[containers[i].id] = null;
-    }
+function update(room) {
+    let memory = room.memory;
+    room.find(FIND_STRUCTURES, {filter: (s) => s.structureType === STRUCTURE_CONTAINER}).map(c => {
+        memory.containers[c.id] = memory.containers[c.id] || null;
+    });
 }
 
 function main() {
@@ -19,9 +19,11 @@ function main() {
         Memory.rooms = {};
     }
     for (let key in Game.rooms) {
-        if (!Game.rooms[key].memory || true /* for development */) {
-            init(Game.rooms[key]);
+        let room = Game.rooms[key];
+        if (!room.memory) {
+            init(room);
         }
+        update(room);
     }
 }
 
