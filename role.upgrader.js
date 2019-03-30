@@ -24,9 +24,10 @@ function run(creep) {
     if (creep.memory.collecting) {
         creep.collectFromStockpile();
     } else {
-        // Temporary solution: hardcode to upgrader origin room's controller
-        if (creep.transfer(Game.spawns["origin"].room.controller, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
-            creep.moveTo(Game.spawns["origin"].room.controller);
+        //TODO: remove temp solution hardcoded to upgrade origin room's controller
+        let target = Game.spawns["origin"].room.controller;
+        if (creep.transfer(target, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
+            creep.moveTo(target);
         }
     }
 }
