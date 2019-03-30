@@ -14,11 +14,11 @@ module.exports.loop = function () {
         require("cleanup")();
 
         let numberOfRolesWanted = {
-            "harvester": 2,
-            "builder": 2,
-            "upgrader": 4,
-            "repairer": 2,
             "miner": Object.keys(Game.spawns["origin"].room.memory.containers).length,
+            "collector": 2,
+            "repairer": 2,
+            "builder": 4,
+            "upgrader": 4,
         };
 
         for (let role in numberOfRolesWanted) {
