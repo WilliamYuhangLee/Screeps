@@ -1,41 +1,25 @@
-/*
- * Module code goes here. Use 'module.exports' to export things:
- * module.exports.thing = 'a thing';
+const body = [WORK, WORK, WORK, WORK, WORK, WORK, MOVE, MOVE, MOVE];
+const roleName = "miner";
+
+/**
+ * Spawn a creep as a miner from the designated spawn.
  *
- * You can import it from another modules like this:
- * var mod = require('role.harvester');
- * mod.thing == 'a thing'; // true
+ * @param {StructureSpawn} spawn
  */
-
-global.ERR_NO_UNASSIGNED_CONTAINER = -100;
-
-let body = [WORK, WORK, WORK, WORK, WORK, WORK, MOVE, MOVE, MOVE];
-let roleName = "miner";
-
 function spawn(spawn) {
-    let targetID = undefined;
-    let minDistance = Number.MAX_SAFE_INTEGER;
-    for (const container in spawn.room.memory.containers) {
-        if (spawn.room.memory.containers[container] == null && spawn.pos.getRangeTo(Game.getObjectById(container)) < minDistance) {
-            targetID = container;
-            minDistance = spawn.pos.getRangeTo(Game.getObjectById(container));
-        }
-    }
-    if (!targetID) {
+    let target = spawn.pos.findClosestByPath(Object.keys(spawn.room.memory.containers).map(id => Game.getObjectById(id)),
+        { filter: (s) => spawn.room.memory.containers[s.id] == null });
+    if (!target) {
         return ERR_NO_UNASSIGNED_CONTAINER;
     }
-    let name = 1;
-    while (Game.creeps[roleName + name]) {
-        name++;
-    }
-    name = roleName + name;
+    let name = modules.util.genName(roleName);
     let result = spawn.spawnCreep(body, name, { memory: {
             role: roleName,
-            targetID: targetID,
+            targetID: target.id,
         }
     });
     if (result === 0) {
-        spawn.room.memory.containers[targetID] = name;
+        spawn.room.memory.containers[target.id] = name;
     }
     return result;
 }

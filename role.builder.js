@@ -1,32 +1,51 @@
-/*
- * Module code goes here. Use 'module.exports' to export things:
- * module.exports.thing = 'a thing';
- *
- * You can import it from another modules like this:
- * var mod = require('role.harvester');
- * mod.thing == 'a thing'; // true
- */
-var roleUpgrader = require("role.upgrader");
+const body = [WORK, WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE];
+const roleName = "builder";
 
-module.exports = {
-    run: function (creep) {
-        if (creep.carry.energy === 0) {
-            creep.memory.collecting = true;
-        } else if (creep.carry.energy === creep.carryCapacity) {
-            creep.memory.collecting = false;
-        }
-        if (creep.memory.collecting) {
-            require("prototype.creep")();
-            creep.collectFromStockpile();
-        } else {
-            let construction = creep.pos.findClosestByRange(FIND_MY_CONSTRUCTION_SITES);
-            if (construction) {
-                if (creep.build(construction) === ERR_NOT_IN_RANGE) {
-                    creep.moveTo(construction);
-                }
-            } else {
-                roleUpgrader.run(creep);
+/**
+ * Spawn a creep as a builder from the designated spawn.
+ *
+ * @param {StructureSpawn} spawn
+ */
+function spawn(spawn) {
+    return spawn.spawnCreep(body, modules.util.genName(roleName), { memory: { role: roleName }});
+}
+
+/**
+ * Instructions to be executed by the creep per tick.
+ *
+ * @param {Creep} creep
+ */
+function run(creep) {
+    if (creep.carry.energy === 0) {
+        creep.memory.collecting = true;
+    } else if (creep.carry.energy === creep.carryCapacity) {
+        creep.memory.collecting = false;
+    }
+    if (creep.memory.collecting) {
+        creep.collectFromStockpile();
+    } else {
+        let construction = creep.pos.findClosestByPath(FIND_MY_CONSTRUCTION_SITES);
+        if (construction) {
+            if (creep.build(construction) === ERR_NOT_IN_RANGE) {
+                creep.moveTo(construction);
             }
+        } else {
+            modules.roles["upgrader"].run(creep);
         }
     }
+}
+
+/**
+ * Clear out the creep's storage from Memory
+ *
+ * @param {String} creepName
+ */
+function clear(creepName) {
+    delete Memory.creeps[creepName];
+}
+
+module.exports = {
+    spawn: spawn,
+    run: run,
+    clear: clear,
 };
