@@ -31,18 +31,27 @@ function spawn(spawn) {
  * @param {Creep} creep
  */
 function run(creep) {
-    if (creep.carry.energy === 0) {
+    if (_.sum(creep.carry) === 0) {
         creep.memory.collecting = true;
-    } else if (creep.carry.energy === creep.carryCapacity) {
+    } else if (_.sum(creep.carry) === creep.carryCapacity) {
         creep.memory.collecting = false;
     }
     if (creep.memory.collecting) {
         let targets = [];
         targets.push(Game.getObjectById(creep.memory.targetID));
-        targets = targets.concat(creep.room.find(FIND_TOMBSTONES, { filter: t => t.store[RESOURCE_ENERGY] > 0}));
-        targets = targets.concat(creep.room.find(FIND_DROPPED_RESOURCES, { filter: r => r.resourceType === RESOURCE_ENERGY}));
+        targets = targets.concat(creep.room.find(FIND_STRUCTURES, { filter: s =>
+                s.structureType === STRUCTURE_CONTAINER && _.sum(s.store) > 0
+        }));
+        targets = targets.concat(creep.room.find(FIND_TOMBSTONES, { filter: t => _.sum(t.store) > 0}));
+        targets = targets.concat(creep.room.find(FIND_DROPPED_RESOURCES));
         let target = creep.pos.findClosestByPath(targets);
-        let withdrawResult = creep.withdraw(target, RESOURCE_ENERGY);
+
+        let withdrawResult;
+        if (target instanceof Resource) {
+            withdrawResult = creep.pickup(target);
+        } else {
+            withdrawResult = creep.withdraw(target, _.findKey(target.store));
+        }
         if (withdrawResult === 0) {
             creep.memory.waiting = 0;
             return 0;
@@ -55,7 +64,7 @@ function run(creep) {
             }
         }
         creep.memory.waiting++;
-        if (creep.memory.waiting > 10 && creep.carry[RESOURCE_ENERGY] > creep.carryCapacity / 4) {
+        if (creep.memory.waiting > 10 && _.sum(creep.carry) > creep.carryCapacity / 4) {
             creep.memory.collecting = false;
         }
     } else {
@@ -63,6 +72,9 @@ function run(creep) {
             return (s.structureType === STRUCTURE_EXTENSION && s.energy < s.energyCapacity)
                 || (s.structureType === STRUCTURE_SPAWN && s.energy < s.energyCapacity)
             }});
+        if (_.sum(creep.carry) > creep.carry[RESOURCE_ENERGY]) {
+            destination = creep.room.storage;
+        }
         if (!destination) {
             destination = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, { filter: (s) => {
                 return s.structureType === STRUCTURE_TOWER && s.energy < s.energyCapacity;
@@ -85,7 +97,7 @@ function run(creep) {
         if (!destination) {
             creep.memory.waiting++;
         }
-        let transferResult = creep.transfer(destination, RESOURCE_ENERGY);
+        let transferResult = creep.transfer(destination, _.findKey(creep.carry));
         if (transferResult === 0) {
             creep.memory.waiting = 0;
             return 0;

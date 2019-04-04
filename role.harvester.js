@@ -1,4 +1,4 @@
-const body = [WORK, CARRY, CARRY, MOVE, MOVE, MOVE];
+const body = [WORK, WORK, CARRY, CARRY, MOVE, MOVE];
 const roleName = "harvester";
 
 /**
