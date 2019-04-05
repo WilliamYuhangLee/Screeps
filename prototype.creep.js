@@ -49,7 +49,7 @@ module.exports = function () {
             },
             ignoreCreeps: false,
         };
-        if (first instanceof RoomPosition || first.pos && first.pos instanceof RoomPosition) {
+        if (first instanceof RoomPosition || first.pos && (first.pos instanceof RoomPosition)) {
             if (second instanceof Object) {
                 Object.assign(opts, second);
             }

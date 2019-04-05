@@ -1,6 +1,5 @@
 const body = [CLAIM, MOVE];
 const roleName = "claimer";
-let targetName = "" || null;
 
 /**
  * Spawn a creep as a claimer from the designated spawn.
@@ -11,7 +10,10 @@ let targetName = "" || null;
  */
 function spawn(spawn, opts) {
     let args = {
-        memory: { role: roleName, target: targetName }
+        memory: {
+            role: roleName,
+            target: null,
+        },
     };
     if (opts) {
         if (opts instanceof Object) {

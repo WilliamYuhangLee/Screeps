@@ -3,8 +3,9 @@ require("prototype.spawn")();
 require("prototype.creep")();
 
 const profiler = require("screeps-profiler");
+
 // Switch for turning on profiler
-profiler.enable();
+// profiler.enable();
 
 module.exports.loop = function () {
     profiler.wrap(function () {
