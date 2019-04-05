@@ -6,6 +6,7 @@ let modules = {
         repairer: require("role.repairer"),
         miner: require("role.miner"),
         collector: require("role.collector"),
+        claimer: require("role.claimer"),
     },
     util: require("util"),
 };
