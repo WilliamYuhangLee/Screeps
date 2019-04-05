@@ -54,7 +54,7 @@ module.exports = function () {
                 Object.assign(opts, second);
             }
             return oldMoveTo.apply(this, [first, opts]);
-        } else if (first instanceof Number && second instanceof Number) {
+        } else if (typeof first === "number" && typeof second === "number") {
             if (third instanceof Object) {
                 Object.assign(opts, third);
             }

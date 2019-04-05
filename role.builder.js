@@ -38,7 +38,7 @@ function run(creep) {
 /**
  * Clear out the creep's storage from Memory
  *
- * @param {String} creepName
+ * @param {string} creepName
  */
 function clear(creepName) {
     delete Memory.creeps[creepName];

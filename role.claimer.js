@@ -6,7 +6,7 @@ const roleName = "claimer";
  *
  * @param {StructureSpawn} spawn: where the new creep is spawned
  * @param {Object} [opts] an Object with additional options for the spawning process
- * @param {String} [opts] the name of target room or flag
+ * @param {string} [opts] the name of target room or flag
  */
 function spawn(spawn, opts) {
     let args = {
@@ -18,7 +18,7 @@ function spawn(spawn, opts) {
     if (opts) {
         if (opts instanceof Object) {
             _.merge(args, opts);
-        } else if (opts instanceof String && (Game.map.isRoomAvailable(opts) || Game.flags[opts])) {
+        } else if (typeof opts === "string" && (Game.map.isRoomAvailable(opts) || Game.flags[opts])) {
             args.memory.target = opts;
         } else {
             return ERR_INVALID_ARGS;
@@ -69,7 +69,7 @@ function run(creep) {
 /**
  * Clear out the creep's storage from Memory
  *
- * @param {String} creepName
+ * @param {string} creepName
  */
 function clear(creepName) {
     delete Memory.creeps[creepName];
