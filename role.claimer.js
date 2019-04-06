@@ -24,7 +24,7 @@ function spawn(spawn, opts) {
             return ERR_INVALID_ARGS;
         }
     }
-    return spawn.spawnCreep(body, modules.util.genName(roleName), args);
+    return spawn.spawnCreep(body, modules.util.genName(roleName, args.memory.target), args);
 }
 
 /**

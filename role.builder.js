@@ -5,9 +5,26 @@ const roleName = "builder";
  * Spawn a creep as a builder from the designated spawn.
  *
  * @param {StructureSpawn} spawn
+ * @param {Object} [opts] an Object with additional options for the spawning process
+ * @param {string} [opts] the name of target room or flag
  */
-function spawn(spawn) {
-    return spawn.spawnCreep(body, modules.util.genName(roleName), { memory: { role: roleName }});
+function spawn(spawn, opts) {
+    let args = {
+        memory: {
+            role: roleName,
+            home: spawn.room.name,
+        },
+    };
+    if (opts) {
+        if (opts instanceof Object) {
+            _.merge(args, opts);
+        } else if (typeof opts === "string" && Game.map.isRoomAvailable(opts)) {
+            args.memory.home = opts;
+        } else {
+            return ERR_INVALID_ARGS;
+        }
+    }
+    return spawn.spawnCreep(body, modules.util.genName(roleName, args.memory.home), args);
 }
 
 /**
@@ -16,6 +33,11 @@ function spawn(spawn) {
  * @param {Creep} creep
  */
 function run(creep) {
+    if (creep.memory.home) {
+        if (creep.room.name !== creep.memory.home) {
+            return creep.moveTo(new RoomPosition(25, 25, creep.memory.home));
+        }
+    }
     if (creep.carry.energy === 0) {
         creep.memory.collecting = true;
     } else if (creep.carry.energy === creep.carryCapacity) {

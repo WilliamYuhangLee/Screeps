@@ -6,11 +6,16 @@ module.exports = {
         }, 0);
     },
 
-    genName: function (roleName) {
+    genName: function (roleName, roomName) {
+        if (roomName) {
+            roomName = "[" + roomName + "]";
+        } else {
+            roomName = "";
+        }
         let number = 1;
-        while (Game.creeps[roleName + number]) {
+        while (Game.creeps[roomName + roleName + number]) {
             number++;
         }
-        return roleName + number;
+        return roomName + roleName + number;
     }
 };
