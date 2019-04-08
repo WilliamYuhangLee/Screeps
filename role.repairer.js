@@ -4,9 +4,9 @@ const roleName = "repairer";
 /**
  * Spawn a creep as a repairer from the designated spawn.
  *
- * @param {StructureSpawn} spawn
+ * @param {StructureSpawn} spawn: where to spawn the new creep
  * @param {Object} [opts] an Object with additional options for the spawning process
- * @param {string} [opts] the name of target room or flag
+ * @param {string} [opts] the name of the new creep's home room
  */
 function spawn(spawn, opts) {
     let args = {
@@ -33,6 +33,9 @@ function spawn(spawn, opts) {
  * @param {Creep} creep
  */
 function run(creep) {
+    if (creep.room.name !== creep.memory.home) {
+        return creep.moveTo(new RoomPosition(25, 25, creep.memory.home));
+    }
     if (creep.carry.energy === 0) {
         creep.memory.collecting = true;
     } else if (creep.carry.energy === creep.carryCapacity) {

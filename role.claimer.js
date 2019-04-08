@@ -4,7 +4,7 @@ const roleName = "claimer";
 /**
  * Spawn a creep as a claimer from the designated spawn.
  *
- * @param {StructureSpawn} spawn: where the new creep is spawned
+ * @param {StructureSpawn} spawn: where to spawn the new creep
  * @param {Object} [opts] an Object with additional options for the spawning process
  * @param {string} [opts] the name of target room or flag
  */

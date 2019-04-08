@@ -51,12 +51,12 @@ module.exports = function () {
         };
         if (first instanceof RoomPosition || first.pos && (first.pos instanceof RoomPosition)) {
             if (second instanceof Object) {
-                Object.assign(opts, second);
+                _.merge(opts, second);
             }
             return oldMoveTo.apply(this, [first, opts]);
         } else if (typeof first === "number" && typeof second === "number") {
             if (third instanceof Object) {
-                Object.assign(opts, third);
+                _.merge(opts, third);
             }
             return oldMoveTo.apply(this, [first, second, opts]);
         } else {

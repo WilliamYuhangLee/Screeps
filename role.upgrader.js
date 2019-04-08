@@ -4,9 +4,9 @@ const roleName = "upgrader";
 /**
  * Spawn a creep as an upgrader from the designated spawn.
  *
- * @param {StructureSpawn} spawn
+ * @param {StructureSpawn} spawn: where to spawn the new creep
  * @param {Object} [opts] an Object with additional options for the spawning process
- * @param {string} [opts] the name of the new creep's home Room
+ * @param {string} [opts] the name of the new creep's home room
  */
 function spawn(spawn, opts) {
     let args = {
@@ -33,11 +33,8 @@ function spawn(spawn, opts) {
  * @param {Creep} creep
  */
 function run(creep) {
-    if (creep.memory.home) {
-        if (creep.room.name !== creep.memory.home) {
-            creep.moveTo(new RoomPosition(25, 25, creep.memory.home));
-            return;
-        }
+    if (creep.room.name !== creep.memory.home) {
+        return creep.moveTo(new RoomPosition(25, 25, creep.memory.home));
     }
     if (creep.carry.energy === 0) {
         creep.memory.collecting = true;
