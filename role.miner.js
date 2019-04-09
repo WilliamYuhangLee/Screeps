@@ -30,13 +30,20 @@ function spawn(spawn, opts) {
     }
     let containers = Memory.rooms[args.memory.home].containers;
     if (!args.targetID || !(Game.getObjectById(args.targetID) instanceof StructureContainer)) {
-        let targets = Object.keys(containers).filter(c => containers[c].sourceID && !containers[c].miner);
-        if (_.isEmpty(targets)) return ERR_NO_UNASSIGNED_CONTAINER;
-        let target = spawn.pos.findClosestByPath(targets.map(c => Game.getObjectById(c)));
+        let targetIDs = Object.keys(containers).filter(c => containers[c].sourceID && !containers[c].miner);
+        if (targetIDs.length === 0) return ERR_NO_UNASSIGNED_CONTAINER;
+        let targets = targetIDs.map(c => {
+            let container = Game.getObjectById(c);
+            if (!container) delete containers[container.id];
+            return container;
+        });
+        targets = targets.filter(Boolean);
+        if (targets.length === 0) return ERR_NO_UNASSIGNED_CONTAINER;
+        let target = spawn.pos.findClosestByPath(targets);
         if (target) {
             args.memory.targetID = target.id;
         } else {
-            args.memory.targetID = modules.util.minBy(targets, id => _.sum(Game.getObjectById(id).store));
+            args.memory.targetID = _.min(targetIDs, id => _.sum(Game.getObjectById(id).store));
         }
     }
     args.memory.sourceID = containers[args.memory.targetID].sourceID;

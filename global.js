@@ -10,8 +10,10 @@ module.exports = function () {
             collector: require("role.collector"),
             claimer: require("role.claimer"),
         },
+        memory: {
+            room: require("memory.room"),
+        },
         util: require("util"),
-        room: require("room"),
     };
 
     /**
